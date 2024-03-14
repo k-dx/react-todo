@@ -21,7 +21,8 @@ export default function ({ page, setPage, itemsPerPage, totalVisibleItems }: IPr
         of{' '}
         <span className="font-semibold text-gray-900 dark:text-white">{totalVisibleItems}{' '}
         </span>
-        Entries
+        Entries{' '}
+        <span>(Page {page})</span>
       </span>
       <div className="inline-flex mt-2 xs:mt-0">
         {/* <!-- Buttons --> */}

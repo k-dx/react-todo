@@ -57,6 +57,8 @@ export default function App() {
     return (a: ITodo, b: ITodo) => a.id - b.id;
   }
 
+  // const visibleTodos = 
+
   return (
     <div className="p-4 dark:bg-gray-800 min-h-screen dark:text-gray-100">
       <div className="max-w-2xl mx-auto">
@@ -84,7 +86,18 @@ export default function App() {
           page={page}
           setTodos={setTodos}
           todos={todos}
+          // todos={visibleTodos}
           itemsPerPage={itemsPerPage}
+          onCheck={(id) => {
+            const newTodos = todos.map((t) =>
+              t.id === id ? { ...t, done: !t.done } : t
+            );
+            setTodos(newTodos);
+          }}
+          onDelete={(id) => {
+            const filteredTodos = todos.filter((t) => t.id !== id);
+            setTodos(filteredTodos);
+          }}
         />
         <Paginator
           page={page}

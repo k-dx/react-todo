@@ -1,18 +1,19 @@
 import Icon from "../Icon/Icon";
 
 interface IProps {
+  id: number;
   done: boolean;
   content: string;
-  onCheck: () => void;
+  onCheck: (id: number) => void;
   onDelete: () => void;
 }
 
-export default function ({ done, content, onCheck, onDelete }: IProps) {
+export default function ({ id, done, content, onCheck, onDelete }: IProps) {
   return (
     <li className="group flex items-center min-h-7">
       <input
         type="checkbox"
-        onChange={onCheck}
+        onChange={() => onCheck(id)}
         checked={done}
         className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
       />

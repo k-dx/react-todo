@@ -9,15 +9,19 @@ interface IProps {
   compare: (a: ITodo, b: ITodo) => number;
   page: number;
   itemsPerPage: number;
+  onCheck: (id: number) => void;
+  onDelete: (id: number) => void;
 }
 
 export default function ({
   todos,
   setTodos,
+  onDelete,
   filters,
   compare,
   page,
-  itemsPerPage
+  itemsPerPage,
+  onCheck
 }: IProps) {
   return (
     <ul className="list-none list-inside space-y-1">
@@ -31,18 +35,11 @@ export default function ({
         .map((todo) => (
           <TodoLi
             key={todo.id}
+            id={todo.id} /* PYTANIE czy można/powinno się używać key? */
             done={todo.done}
             content={todo.content}
-            onCheck={() => {
-              const newTodos = todos.map((t) =>
-                t.id === todo.id ? { ...t, done: !t.done } : t
-              );
-              setTodos(newTodos);
-            }}
-            onDelete={() => {
-              const filteredTodos = todos.filter((t) => t.id !== todo.id);
-              setTodos(filteredTodos);
-            }}
+            onCheck={() => onCheck(todo.id)} /* PYTANIE czemu to się typuje skoro to jest funkcja (void) => void, a nie (number) => void ? */
+            onDelete={() => onDelete(todo.id)}
           />
         ))}
     </ul>
