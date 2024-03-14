@@ -34,8 +34,6 @@ const initialTodos: ITodo[] = [
   { id: 8, done: true, content: "zzz" },
 ];
 
-const itemsPerPage = 5;
-
 const getCompare = (sort: ISort) => {
   if (sort === "a-z") {
     return (a: ITodo, b: ITodo) => a.content.localeCompare(b.content);
@@ -73,6 +71,7 @@ export default function App() {
   });
   const [sort, setSort] = useState<ISort>("default");
   const [page, setPage] = useState<number>(1);
+  const [itemsPerPage, setItemsPerPage] = useState<number>(5);
 
   const getNextId = () => {
     setCurrId(currId + 1);
@@ -140,8 +139,9 @@ export default function App() {
         <Paginator
           page={page}
           setPage={setPage}
-          itemsPerPage={itemsPerPage}
           totalVisibleItems={filteredTodos.length}
+          itemsPerPage={itemsPerPage}
+          setItemsPerPage={setItemsPerPage}
         />
       </div>
     </div>
