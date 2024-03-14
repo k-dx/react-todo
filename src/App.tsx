@@ -31,6 +31,15 @@ const initialTodos: ITodo[] = [
 
 const itemsPerPage = 5;
 
+const getCompare = (sort: ISort) => {
+  if (sort === 'a-z') {
+    return (a: ITodo, b: ITodo) => a.content.localeCompare(b.content);
+  } else if (sort === 'z-a') {
+    return (a: ITodo, b: ITodo) => b.content.localeCompare(a.content);
+  }
+  return (a: ITodo, b: ITodo) => a.id - b.id;
+}
+
 export default function App() {
   const [todos, setTodos] = useState(initialTodos);
   const [currId, setCurrId] = useState<number>(
@@ -48,16 +57,11 @@ export default function App() {
     return currId;
   };
 
-  const getCompare = (sort: ISort) => {
-    if (sort === 'a-z') {
-      return (a: ITodo, b: ITodo) => a.content.localeCompare(b.content);
-    } else if (sort === 'z-a') {
-      return (a: ITodo, b: ITodo) => b.content.localeCompare(a.content);
-    }
-    return (a: ITodo, b: ITodo) => a.id - b.id;
-  }
-
-  // const visibleTodos = 
+  const visibleTodos = todos
+    .filter((todo) => !filters.onlyUndone || !todo.done)
+    .filter((todo) => todo.content.includes(filters.search))
+    .sort(getCompare(sort))
+    .slice((page - 1) * itemsPerPage, page * itemsPerPage);
 
   return (
     <div className="p-4 dark:bg-gray-800 min-h-screen dark:text-gray-100">
@@ -81,13 +85,7 @@ export default function App() {
           classNames="mb-2"
         />
         <TodoUl
-          compare={getCompare(sort)}
-          filters={filters}
-          page={page}
-          setTodos={setTodos}
-          todos={todos}
-          // todos={visibleTodos}
-          itemsPerPage={itemsPerPage}
+          todos={visibleTodos}
           onCheck={(id) => {
             const newTodos = todos.map((t) =>
               t.id === id ? { ...t, done: !t.done } : t
