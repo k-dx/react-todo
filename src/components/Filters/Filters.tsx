@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ISort } from '../../App'
+import { ISort } from "../../App";
 
 interface IProps {
   classNames?: string;
@@ -15,9 +15,9 @@ type Sorts = {
   [key in ISort]: { caption: string };
 };
 const sorts: Sorts = {
-  'default': { caption: 'Default sort' },
-  'a-z': { caption: 'Sort a-z' },
-  'z-a': { caption: 'Sort z-a' },
+  default: { caption: "Default sort" },
+  "a-z": { caption: "Sort a-z" },
+  "z-a": { caption: "Sort z-a" },
 };
 
 export default function ({
@@ -59,19 +59,56 @@ export default function ({
         </div>
 
         <div className="relative inline-block">
-          <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 min-w-40 inline-flex items-center justify-between" type="button"
-            onClick={(e) => { e.stopPropagation(); setDropdownShow(!dropdownShow) }}>
+          <button
+            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 min-w-40 inline-flex items-center justify-between"
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              setDropdownShow(!dropdownShow);
+            }}
+          >
             {sorts[sort].caption}
-            <svg className="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-              <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
+            <svg
+              className="w-2.5 h-2.5 ms-3"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 10 6"
+            >
+              <path
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="m1 1 4 4 4-4"
+              />
             </svg>
           </button>
 
-          <div id="dropdown" className={`absolute left-0 top-full z-50 ${dropdownShow ? '' : 'hidden'} bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700`}>
-            <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
+          <div
+            id="dropdown"
+            className={`absolute left-0 top-full z-50 ${
+              dropdownShow ? "" : "hidden"
+            } bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700`}
+          >
+            <ul
+              className="py-2 text-sm text-gray-700 dark:text-gray-200"
+              aria-labelledby="dropdownDefaultButton"
+            >
               {Object.entries(sorts).map(([key, value]) => (
-                <li key={key} onClick={() => { setSort(key); setDropdownShow(false) }}>
-                  <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{value.caption}</a>
+                <li
+                  key={key}
+                  onClick={() => {
+                    setSort(key);
+                    setDropdownShow(false);
+                  }}
+                >
+                  <a
+                    href="#"
+                    className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                  >
+                    {value.caption}
+                  </a>
                 </li>
               ))}
             </ul>
