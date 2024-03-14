@@ -22,10 +22,10 @@ const initialTodos: ITodo[] = [
   { id: 1, done: true, content: "World" },
   { id: 2, done: false, content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ac dictum velit. Etiam ut felis enim. Ut aliquet felis a est dapibus sodales. Nam non metus eget magna posuere tristique. Cras a accumsan turpis. Mauris molestie viverra leo, non placerat sem congue consectetur. Fusce scelerisque pretium urna sed dictum. Integer pharetra ligula sed viverra convallis. " },
   { id: 3, done: true, content: "a" },
-  { id: 4, done: true, content: "aa" },
-  { id: 5, done: true, content: "ab" },
-  { id: 6, done: true, content: "b" },
-  { id: 7, done: true, content: "bab" },
+  { id: 4, done: false, content: "aa" },
+  { id: 5, done: false, content: "ab" },
+  { id: 6, done: false, content: "b" },
+  { id: 7, done: false, content: "bab" },
   { id: 8, done: true, content: "zzz" }
 ];
 
@@ -39,6 +39,24 @@ const getCompare = (sort: ISort) => {
   }
   return (a: ITodo, b: ITodo) => a.id - b.id;
 }
+const getFilteredTodos = (
+  todos: ITodo[],
+  sort: ISort,
+  filters: IFilters,
+) => todos
+  .filter((todo) => !filters.onlyUndone || !todo.done)
+  .filter((todo) => todo.content.includes(filters.search))
+  .sort(getCompare(sort))
+
+const getVisibleTodos = (
+  todos: ITodo[],
+  sort: ISort,
+  page: number,
+  filters: IFilters,
+  itemsPerPage: number
+) =>
+  getFilteredTodos(todos, sort, filters)
+    .slice((page - 1) * itemsPerPage, page * itemsPerPage);
 
 export default function App() {
   const [todos, setTodos] = useState(initialTodos);
@@ -57,11 +75,15 @@ export default function App() {
     return currId;
   };
 
-  const visibleTodos = todos
-    .filter((todo) => !filters.onlyUndone || !todo.done)
-    .filter((todo) => todo.content.includes(filters.search))
-    .sort(getCompare(sort))
-    .slice((page - 1) * itemsPerPage, page * itemsPerPage);
+  const filteredTodos = getFilteredTodos(todos, sort, filters);
+  const visibleTodos = getVisibleTodos(todos, sort, page, filters,
+    itemsPerPage);
+
+  const goBackPageIfNoItems = (newTodos: ITodo[]) => {
+    if (page > 1 && getVisibleTodos(newTodos, sort, page, filters, itemsPerPage).length == 0) {
+      setPage(page - 1);
+    }
+  }
 
   return (
     <div className="p-4 dark:bg-gray-800 min-h-screen dark:text-gray-100">
@@ -78,10 +100,8 @@ export default function App() {
           onlyUndone={filters.onlyUndone}
           sort={sort}
           setSort={setSort}
-          onDoneChange={(onlyUndone) => 
-            { setFilters({ ...filters, onlyUndone }) }}
-          onSearchChange={(search) => 
-            { setFilters({ ...filters, search }) }}
+          onDoneChange={(onlyUndone) => { setPage(1); setFilters({ ...filters, onlyUndone }) }}
+          onSearchChange={(search) => { setPage(1); setFilters({ ...filters, search }) }}
           classNames="mb-2"
         />
         <TodoUl
@@ -91,17 +111,19 @@ export default function App() {
               t.id === id ? { ...t, done: !t.done } : t
             );
             setTodos(newTodos);
+            goBackPageIfNoItems(newTodos);
           }}
           onDelete={(id) => {
             const filteredTodos = todos.filter((t) => t.id !== id);
             setTodos(filteredTodos);
+            goBackPageIfNoItems(filteredTodos);
           }}
         />
         <Paginator
           page={page}
           setPage={setPage}
           itemsPerPage={itemsPerPage}
-          totalVisibleItems={todos.length}
+          totalVisibleItems={filteredTodos.length}
         />
       </div>
     </div>
