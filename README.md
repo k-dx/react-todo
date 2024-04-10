@@ -1,3 +1,9 @@
+# React todo app
+
+A simple React todo app with pagination and user-decided number of items per page. Tailwind for styling.
+
+---
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
