@@ -14,8 +14,8 @@ export interface IFilters {
   search: string;
   onlyUndone: boolean;
 }
-
-export type ISort = "default" | "a-z" | "z-a";
+export const possibleSorts = ["default", "a-z", "z-a"] as const;
+export type ISort = (typeof possibleSorts)[number];
 
 const initialTodos: ITodo[] = [
   { id: 0, done: false, content: "Hello" },

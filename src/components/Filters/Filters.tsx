@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ISort } from "../../App";
+import { ISort, possibleSorts } from "../../App";
 
 interface IProps {
   classNames?: string;
@@ -95,7 +95,7 @@ export default function ({
               className="py-2 text-sm text-gray-700 dark:text-gray-200"
               aria-labelledby="dropdownDefaultButton"
             >
-              {Object.entries(sorts).map(([key, value]) => (
+              {possibleSorts.map((key) => (
                 <li
                   key={key}
                   onClick={() => {
@@ -107,7 +107,7 @@ export default function ({
                     href="#"
                     className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                   >
-                    {value.caption}
+                    {sorts[key].caption}
                   </a>
                 </li>
               ))}

@@ -13,12 +13,13 @@ export default function ({ onCheck, onDelete, todos }: IProps) {
       {todos.map((todo) => (
         <TodoLi
           key={todo.id}
-          id={todo.id} /* PYTANIE czy można/powinno się używać key? */
+          id={todo.id} /* PYTANIE czy można/powinno się używać key? -> TAK */
           done={todo.done}
           content={todo.content}
           onCheck={() =>
             onCheck(todo.id)
-          } /* PYTANIE czemu to się typuje skoro to jest funkcja (void) => void, a nie (number) => void ? */
+          } /* PYTANIE czemu to się typuje skoro to jest funkcja (void) => void, a nie (number) => void ?
+          ->  Jeśli chodzi o to czemu onCheck się typuje: napisana funkcja przyjmuje number (i nic z nim nie robi) i nie zwraca nic, więc jest dobrego typu. A raczej, TypeScript jest w stanie to dopasować do takiej funkcji. Napisanie (id: number) => {} jedynie nazywa pierwszy argument "id". */
           onDelete={() => onDelete(todo.id)}
         />
       ))}

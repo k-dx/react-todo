@@ -1,5 +1,3 @@
-import React from "react";
-
 type iconType = "search" | "plus-circle" | "close-circle";
 
 interface IProps {
